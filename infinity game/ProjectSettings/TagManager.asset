@@ -6,14 +6,18 @@ TagManager:
   tags:
   - ground
   - Obstancle
+  - GamePause
+  - Exit
+  - Pause
+  - Resume
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
+  - obtancle
   - 
   - 
   - 

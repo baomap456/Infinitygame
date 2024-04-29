@@ -28,29 +28,14 @@ public class GenerateOnject : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= 2)
         {
-            addObsatancle();
+            //addObsatancle();
             timer = 0;
         }
     }
 
     void addObsatancle ()
     {
-        Vector3 positionOfPlayer = GameObject.Find("Player").GetComponent<Player>().initialPosition + Vector3.down * .3f;
-        float randomNumber = Random.Range(1, 5);
-        GameObject t1, t2, t3, t4;
-        t1 = (GameObject)(GameObject.Instantiate(Obstancle, positionOfPlayer + Vector3.right * 20, Quaternion.identity));
-        if (randomNumber > 1)
-        {
-            t2 = (GameObject)(GameObject.Instantiate(Obstancle, positionOfPlayer + Vector3.right * 21, Quaternion.identity));
-        }
-        if (randomNumber > 2)
-        {
-            t3 = (GameObject)(GameObject.Instantiate(Obstancle, positionOfPlayer + Vector3.right * 22, Quaternion.identity));
-        }
-        if (randomNumber > 3)
-        {
-            t4 = (GameObject)(GameObject.Instantiate(Obstancle, positionOfPlayer + Vector3.right * 21 + Vector3.up, Quaternion.identity));
-        }
+       
     }
 
    /* void CreateClouds ()

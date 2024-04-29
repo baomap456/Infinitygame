@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class HUD : MonoBehaviour
 {
-    public void startGame()
+    public void StartGame()
     {
         SceneManager.LoadScene("Chapter1");
     }
 
-    public void resume()
+    public void Resume()
     {
-        GameObject.Find("Player").GetComponent<Player>(). resume();
+        GameObject.FindWithTag("Player").GetComponent<Player>(). Resume();
     }
 
-    public void pause()
+    public void Pause()
     {
-        GameObject.Find("Player").GetComponent<Player>(). pause();
+        GameObject.FindWithTag("Player").GetComponent<Player>(). Pause();
     }
-    public void exit()
+    public void Exit()
     {
         Application.Quit();
     }

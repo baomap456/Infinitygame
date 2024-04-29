@@ -6,22 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public float JumpForce;
-    public Vector3 initialPosition;
-    GameObject Pause, Exit, Resume, gamePause;
-    public bool paused;
-    [SerializeField]
-    bool isOnGround;
+    private float Jumppower = 10f;
+    private float Speed = 8f;
+    private float horizontal;
+    private bool isFacingRight = true;
+    private Vector3 initialPosition;
+    GameObject pause, exit, resume, gamePause;
+    private bool paused;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private LayerMask groundLayer;
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("ground"))
-        {
-            if (isOnGround == false) 
-            { 
-                isOnGround = true;
-            }
-        }
+      
         if (collision.collider.tag == "Obstancle")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -33,14 +31,14 @@ public class Player : MonoBehaviour
         initialPosition = transform.position;
         paused = false;
         initialPosition = gameObject.transform.position;
-        gamePause = GameObject.Find("GamePause");
-        Resume = GameObject.Find("resume");
-        Exit = GameObject.Find("exit");
-        Pause = GameObject.Find("pause");
+        gamePause = GameObject.FindWithTag("GamePause");
+        resume = GameObject.FindWithTag("Resume");
+        exit = GameObject.FindWithTag("Exit");
+        pause = GameObject.FindWithTag("Pause");
         displayPauseButton(false);
 
     }
-    public void pause()
+    public void Pause()
     {
         paused =true;
         displayPauseButton(true);
@@ -51,25 +49,49 @@ public class Player : MonoBehaviour
     void displayPauseButton (bool state)
     {
         gamePause.SetActive(state);
-        Resume.SetActive(state);
-        Exit.SetActive(state);
-        Pause.SetActive(!state);
+        resume.SetActive(state);
+        exit.SetActive(state);
+        pause.SetActive(!state);
     }
 
-    public void resume()
+    public void Resume()
     {
         Time.timeScale = 1;
         displayPauseButton(false);
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump") && IsGround())
         {
-            if (isOnGround == true)
-            {
-                GetComponent<Rigidbody2D>().AddForce(Vector2.up * JumpForce);
-                isOnGround = false;
-            }
+            rb.velocity = new Vector2(rb.velocity.x, Jumppower);
+        }
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
+        Flip();
+
+
+    }
+    private bool IsGround()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2 (horizontal * Speed, rb.velocity.y);
+    }
+    private void Flip()
+    {
+        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        {
+            isFacingRight= !isFacingRight;
+            Vector3 localscale = transform.localScale;
+            localscale.x *= -1f;
+            transform.localScale = localscale;
         }
     }
 }
